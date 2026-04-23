@@ -1,18 +1,29 @@
 "use client";
+import { authClient } from "@/app/lib/auth-client";
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 
-function SignUp() {
+const SignUp = () => {
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data: Record<string, string> = {};
+    const Formdata: Record<string, string> = {};
     // Convert FormData to plain object
     formData.forEach((value, key) => {
-      data[key] = value.toString();
+      Formdata[key] = value.toString();
     });
-    alert(`Form submitted with: ${JSON.stringify(data, null, 2)}`);
+    alert(`Form submitted with: ${JSON.stringify(Formdata, null, 2)}`);
+
+    const { data, error } = await authClient.signUp.email({
+      name: Formdata.name,
+      email: Formdata.email,
+      password: Formdata.password,
+
+    });
+    
+    console.log("Sign up response:", { data, error });
+
   };
 
   return (
@@ -31,7 +42,7 @@ function SignUp() {
           }}
         >
           <Label>Name</Label>
-          <Input placeholder="John Doe" />
+          <Input name="name" placeholder="Enter your name" />
           <FieldError />
         </TextField>
         {/* email field */}
@@ -47,7 +58,7 @@ function SignUp() {
           }}
         >
           <Label>Email</Label>
-          <Input placeholder="john@example.com" />
+          <Input name="email" placeholder="Enter your email" />
           <FieldError />
         </TextField>
         {/* password field */}
@@ -70,10 +81,11 @@ function SignUp() {
           }}
         >
           <Label>Password</Label>
-          <Input placeholder="Enter your password" />
+          <Input name="password" placeholder="Enter your password" />
           <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
           <FieldError />
         </TextField>
+        {/* buttons  */}
         <div className="flex gap-2">
           <Button type="submit">
             <Check />
