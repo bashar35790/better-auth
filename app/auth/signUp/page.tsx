@@ -19,9 +19,10 @@ const SignUp = () => {
       name: Formdata.name,
       email: Formdata.email,
       password: Formdata.password,
+      callbackURL: "/",
 
     });
-    
+
     console.log("Sign up response:", { data, error });
 
   };

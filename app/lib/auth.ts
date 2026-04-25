@@ -8,8 +8,8 @@ let db: Db | undefined;
 
 async function getDB() {
   if (!db) {
-    await client.connect(); 
-    db = client.db();
+    await client.connect();
+    db = client.db("better-auth-bd");
   }
   return db;
 }
